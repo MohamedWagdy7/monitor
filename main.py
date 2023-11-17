@@ -14,9 +14,9 @@ def monitor(domain, path):
             for subdomain in newsubdomains:
                 if subdomain in outofscope:
                     newsubdomains.remove(subdomain)
-            for i in newsubdomains:
-                print(i)
-
+            with open(f"{path}/.config/new","w") as new:
+                new.writelines(newsubdomains)
+                
 with open("/home/Kalawy/.config/monitor/targets") as targets_file:
     targets = targets_file.readlines()
     for target in targets:
