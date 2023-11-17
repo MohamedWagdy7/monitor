@@ -16,10 +16,6 @@ def monitor(domain, path):
                     newsubdomains.remove(subdomain)
             for i in newsubdomains:
                 print(i)
-            
-    Popen(
-        f"cat {path}/newsubdomains | anew {path}/subdomains >> new", shell=True)
-
 
 with open("/home/Kalawy/.config/monitor/targets") as targets_file:
     targets = targets_file.readlines()
