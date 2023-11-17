@@ -1,21 +1,24 @@
 from subprocess import Popen
-from re import sub
 
 def monitor(domain, path):
     # enumerate subdomains
     proccess = Popen(
         f"amass enum -active -passive -brute -d {domain} -w /home/Kalawy/Pentest/SecLists/Discovery/DNS/subdomains-top1million-110000.txt >> {path}/newsubdomains", shell=True)
+    proccess.wait()
 
     # delete outofscope
     with open(f"{path}/.config/outofscope", "r") as outofscope_file:
-        with open(f"{path}/newsubdomains", "r+") as newsubdomains_file:
+        with open(f"{path}/newsubdomains", "r") as newsubdomains_file:
             outofscope = outofscope_file.readlines()
-            newsubdomains = newsubdomains_file.read()
-            for subdomain in outofscope:
-                updated_content = sub(subdomain, '', newsubdomains)
-            newsubdomains_file.write(newsubdomains)
-    proccess = Popen(
-        f"cat {path}/newsubdomains | anew {path}/subdomains | notify -p discord -d 3", shell=True)
+            newsubdomains = newsubdomains_file.readlines()
+            for subdomain in newsubdomains:
+                if subdomain in outofscope:
+                    newsubdomains.remove(subdomain)
+            for i in newsubdomains:
+                print(i)
+            
+    Popen(
+        f"cat {path}/newsubdomains | anew {path}/subdomains >> new", shell=True)
 
 
 with open("/home/Kalawy/.config/monitor/targets") as targets_file:
