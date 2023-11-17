@@ -14,8 +14,8 @@ def monitor(domain, path):
             for subdomain in newsubdomains:
                 if subdomain in outofscope:
                     newsubdomains.remove(subdomain)
-            with open(f"{path}/new","w") as new:
-                new.writelines(newsubdomains)
+            anew = Popen(f"cat {path}/newsubdomains | anew {path}/subdomains >> {path}/new")
+            anew.wait()
                 
 with open("/home/Kalawy/.config/monitor/targets") as targets_file:
     targets = targets_file.readlines()
