@@ -1,9 +1,9 @@
-from subprocess import Popen
+from subprocess import Popen,PIPE
 
 def monitor(domain, path):
     # enumerate subdomains
     proccess = Popen(
-        f"amass enum -active -passive -brute -d {domain} -w /home/Kalawy/Pentest/SecLists/Discovery/DNS/subdomains-top1million-110000.txt >> {path}/newsubdomains", shell=True)
+        f"amass enum -active -passive -brute -d {domain} -w /home/Kalawy/Pentest/SecLists/Discovery/DNS/subdomains-top1million-110000.txt >> {path}/newsubdomains", shell=True,stdout=PIPE)
     proccess.wait()
 
     # delete outofscope
@@ -14,7 +14,7 @@ def monitor(domain, path):
             for subdomain in newsubdomains:
                 if subdomain in outofscope:
                     newsubdomains.remove(subdomain)
-            with open(f"{path}/.config/new","w") as new:
+            with open(f"{path}/new","w") as new:
                 new.writelines(newsubdomains)
                 
 with open("/home/Kalawy/.config/monitor/targets") as targets_file:
