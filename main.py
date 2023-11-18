@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 from subprocess import Popen,DEVNULL
 
 
@@ -5,7 +7,8 @@ def monitor(domain, path):
     # enumerate subdomains
     proccess = Popen(
         f"amass enum -active -passive -brute -d {domain} -w /home/Kalawy/Pentest/SecLists/Discovery/DNS/subdomains-top1million-110000.txt > {path}/newsubdomains 2>/dev/null", shell=True,stdout=DEVNULL,stderr=DEVNULL)
-    proccess.wait()    
+    proccess.wait()
+    
     # delete outofscope
     with open(f"{path}/.config/outofscope", "r") as outofscope_file:
         with open(f"{path}/newsubdomains", "r") as newsubdomains_file:
