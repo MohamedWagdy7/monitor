@@ -17,7 +17,7 @@ def monitor(domain, path):
             for subdomain in newsubdomains:
                 if subdomain in outofscope:
                     newsubdomains.remove(subdomain)
-            anew = Popen(f"cat {path}/newsubdomains | anew {path}/subdomains | notify -p discord 2>/dev/null && rm {path}/newsubdomains",shell=True,stdout=DEVNULL,stderr=DEVNULL)
+            anew = Popen(f"cat {path}/newsubdomains | anew {path}/subdomains | notify -p discord -delay 5 2>/dev/null && rm {path}/newsubdomains",shell=True,stdout=DEVNULL,stderr=DEVNULL)
             anew.wait()
 
 with open("/home/Kalawy/.config/monitor/targets") as targets_file:
